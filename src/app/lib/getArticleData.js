@@ -3,7 +3,7 @@
 
 const q = `
 {
-  user(username:"QasimAmin") {
+  user(username:"DanDio") {
     blogHandle
     publicationDomain
     publication {

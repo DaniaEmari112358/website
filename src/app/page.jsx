@@ -169,7 +169,7 @@ export default async function Home() {
             I'm Dania, a scientist in mathematics and computer applications. I'm a newly graduated student with multiple interests, and one of them is a new interest in coding.
           </p>
           <div className="mt-6 flex gap-6">
-            <SocialLink
+            {/* <SocialLink
               href="https://twitter.com"
               aria-label="Follow on Twitter"
               icon={TwitterIcon}
@@ -188,7 +188,7 @@ export default async function Home() {
               href="https://linkedin.com"
               aria-label="Follow on LinkedIn"
               icon={LinkedInIcon}
-            />
+            /> */}
           </div>
         </div>
       </Container>

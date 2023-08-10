@@ -1,4 +1,3 @@
-'use client';
 
 import Head from 'next/head'
 import Link from 'next/link'
@@ -148,7 +147,7 @@ function Resume() {
 }
 
 
-export default async function Home({ articles }) {
+export default async function Home() {
   const data = await getArticleData();
   return (
     <>

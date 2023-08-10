@@ -1,8 +1,9 @@
+'use client';
+
 import Head from 'next/head'
 import Link from 'next/link'
 import Image from 'next/image'
 import clsx from "clsx";
-import data from "./articles/data.json"
 
 import { Button } from './components/Button'
 import { Card } from './components/Card'
@@ -15,8 +16,8 @@ import {
 } from './components/SocialIcons'
 
 import { formatDate } from './lib/formatDate'
+import {getArticleData} from './lib/getArticleData'
 // import { generateRssFeed } from './lib/generateRssFeed'
-// import { getAllArticles } from './lib/getAllArticles'
 
 function BriefcaseIcon(props) {
   return (
@@ -54,16 +55,24 @@ function ArrowDownIcon(props) {
   )
 }
 
-function Article({ article }) {
+function getArticleURL(blogHandle, publicationDomain, slug) {
+  if (publicationDomain){
+    return `https://${publicationDomain}/${slug}`
+  }
+  return `https://${blogHandle}.hashnode.dev/${slug}`
+}
+
+async function Article({ article, blogHandle, publicationDomain }) {
+
   return (
     <Card as="article">
-      <Card.Title href={`/articles/${article.slug}`}>
+      <Card.Title href={getArticleURL(blogHandle, publicationDomain, article.slug)}>
         {article.title}
       </Card.Title>
-      <Card.Eyebrow as="time" dateTime={article.date} decorate>
-        {formatDate(article.date)}
+      <Card.Eyebrow as="time" dateTime={article.dateAdded} decorate>
+        {formatDate(article.dateAdded)}
       </Card.Eyebrow>
-      <Card.Description>{article.description}</Card.Description>
+      <Card.Description>{article.brief}</Card.Description>
       <Card.Cta>Read article</Card.Cta>
     </Card>
   )
@@ -138,7 +147,9 @@ function Resume() {
   )
 }
 
-export default function Home() {
+
+export default async function Home({ articles }) {
+  const data = await getArticleData();
   return (
     <>
       <Head>
@@ -185,8 +196,8 @@ export default function Home() {
       <Container className="mt-24 md:mt-28">
         <div className="mx-auto grid max-w-xl grid-cols-1 gap-y-20 lg:max-w-none lg:grid-cols-2">
         <div className="flex flex-col gap-16">
-            {data.map((article) => (
-              <Article key={data.slug} article={article} />
+            {data.posts.map((article) => (
+              <Article key={article.slug} article={article} blogHandle={data.blogHandle} publicationDomain={data.publicationDomain} />
             ))}
           </div>
           <div className="space-y-10 lg:pl-16 xl:pl-24">
@@ -196,18 +207,4 @@ export default function Home() {
       </Container>
     </>
   );
-}
-
-export async function getStaticProps() {
-  if (process.env.NODE_ENV === 'production') {
-    await generateRssFeed()
-  }
-
-  return {
-    props: {
-      articles: (await getAllArticles())
-        .slice(0, 4)
-        .map(({ component, ...meta }) => meta),
-    },
-  }
 }

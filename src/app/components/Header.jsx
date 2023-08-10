@@ -3,12 +3,12 @@
 import { Fragment, useEffect, useRef } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
-import { useRouter } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
 import { Popover, Transition } from '@headlessui/react'
 import clsx from 'clsx'
 
-import { Container } from './components/Container'
-import avatarImage from './images/avatar.jpg'
+import { Container } from './Container'
+import avatarImage from '../images/avatar.jpg'
 
 function CloseIcon(props) {
   return (
@@ -246,7 +246,7 @@ function Avatar({ large = false, className, ...props }) {
 }
 
 export function Header() {
-  let isHomePage = useRouter().pathname === '/'
+  let isHomePage = usePathname() === '/'
 
   let headerRef = useRef()
   let avatarRef = useRef()

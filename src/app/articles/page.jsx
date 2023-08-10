@@ -1,4 +1,3 @@
-'use client';
 
 import Head from 'next/head'
 
@@ -16,23 +15,11 @@ function getArticleURL(blogHandle, publicationDomain, slug) {
   return `https://${blogHandle}.hashnode.dev/${slug}`
 }
 
-async function Article({ article }) {
-  const data = await getArticleData();
-    
-    console.log(data)
-
-    const redirectToHashnode = () => {
-      if (data.publicationDomain != null){
-        window.open("http://" + data.publicationDomain +"/" + article.slug);
-      }else{
-        window.open("http://" + data.blogHandle + ".hashnode.dev/" + article.slug);
-      }
-    };
-
+async function Article({ article, blogHandle, publicationDomain }) {
     return (
-      <article className="md:grid md:grid-cols-4 md:items-baseline" onClick={redirectToHashnode}>
+      <article className="md:grid md:grid-cols-4 md:items-baseline">
         <Card className="md:col-span-3">
-          <Card.Title>
+          <Card.Title href={getArticleURL(blogHandle, publicationDomain, article.slug)}>
             {article.title}
           </Card.Title>
           <Card.Eyebrow
@@ -61,7 +48,6 @@ async function Article({ article }) {
 
     const data = await getArticleData();
     
-    console.log(data)
     return (
       <>
         <Head>
@@ -78,7 +64,7 @@ async function Article({ article }) {
           <div className="md:border-l md:border-zinc-100 md:pl-6 md:dark:border-zinc-700/40">
             <div className="flex max-w-3xl flex-col space-y-16">
               {data.posts.map((article) => (
-                <Article key={article.slug} article={article} />
+                <Article key={article.slug} article={article} blogHandle={data.blogHandle} publicationDomain={data.publicationDomain}/>
               ))}
               
             </div>

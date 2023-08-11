@@ -44,7 +44,9 @@ async function Article({ article, blogHandle, publicationDomain }) {
     )
   }
 
-  export default async function ArticlesIndex() {
+export const revalidate = 3600
+
+export default async function ArticlesIndex() {
 
     const data = await getArticleData();
     

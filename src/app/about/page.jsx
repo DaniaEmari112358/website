@@ -39,6 +39,7 @@ function SocialLink({ className, href, children, icon: Icon }) {
   }
 
   export default function About() {
+    
     return (
       <>
         <Head>
